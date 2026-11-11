@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireUser } from "@/lib/auth-middleware";
+import { computeMoneyOverview } from "@/lib/money.server";
 
 export const getServerInfo = createServerFn({ method: "GET" }).handler(async () => ({
   renderedAt: new Date().toISOString(),
@@ -227,4 +228,31 @@ Return only the JSON object described by the schema.`;
       latestUploads,
       analysisDate: new Date().toISOString(),
     };
+  });
+
+/* --------------------------------- money --------------------------------- */
+
+export const getMoneyOverview = createServerFn({ method: "GET" })
+  .middleware([requireUser])
+  .handler(async ({ context }) => {
+    const base44 = context.getBase44();
+    const [clientsPage, paymentsPage, teamPage] = await Promise.all([
+      base44.entities.Client.list({ sort: "name", limit: 300 }),
+      base44.entities.Payment.list({ sort: "dueDate", limit: 500 }),
+      base44.entities.TeamMember.list({ sort: "name", limit: 500 }),
+    ]);
+
+    return computeMoneyOverview({
+      clients: clientsPage.items,
+      payments: paymentsPage.items,
+      members: teamPage.items,
+    });
+  });
+
+export const markPaymentPaid = createServerFn({ method: "POST" })
+  .middleware([requireUser])
+  .validator(z.object({ id: z.string() }))
+  .handler(async ({ data, context }) => {
+    const paidDate = new Date().toISOString().slice(0, 10);
+    return context.getBase44().entities.Payment.update(data.id, { status: "PAID", paidDate });
   });
