@@ -8,7 +8,6 @@
     },
     "channelUrl": {
       "type": "string",
-      "format": "uri",
       "description": "Link to the client channel"
     },
     "channelThumbnail": {
@@ -19,6 +18,11 @@
       "type": "string",
       "maxLength": 5000
     },
+    "contentStyle": {
+      "type": "string",
+      "maxLength": 8000,
+      "description": "AI read on format, pacing and editing style"
+    },
     "offers": {
       "type": "string",
       "maxLength": 20000,
@@ -27,6 +31,24 @@
     "contentStrategy": {
       "type": "string",
       "maxLength": 20000
+    },
+    "growthOpportunities": {
+      "type": "string",
+      "maxLength": 8000
+    },
+    "strategyItems": {
+      "type": "string",
+      "maxLength": 20000,
+      "description": "JSON list of strategy bullets with reasoning"
+    },
+    "latestUploads": {
+      "type": "string",
+      "maxLength": 20000,
+      "description": "JSON list of most recent uploads, classified by the 4 minute rule"
+    },
+    "analysisDate": {
+      "type": "string",
+      "format": "date-time"
     },
     "planType": {
       "type": "string",
