@@ -1,0 +1,48 @@
+{
+  "name": "AppSetting",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Setting name, e.g. integration status or API config"
+    },
+    "value": {
+      "type": "string",
+      "maxLength": 20000
+    }
+  },
+  "required": [
+    "key"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

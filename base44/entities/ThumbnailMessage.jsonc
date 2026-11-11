@@ -1,0 +1,100 @@
+{
+  "name": "ThumbnailMessage",
+  "type": "object",
+  "properties": {
+    "session": {
+      "type": "string",
+      "description": "ThumbnailSession record id"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "user",
+        "assistant"
+      ],
+      "enumColors": [
+        "blue",
+        "purple"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "maxLength": 20000
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "session",
+    "role",
+    "content"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}

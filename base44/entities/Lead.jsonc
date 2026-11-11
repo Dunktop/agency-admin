@@ -1,0 +1,103 @@
+{
+  "name": "Lead",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "channelUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 5000
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "TO_CONTACT",
+        "CONTACTED",
+        "IN_TALKS",
+        "CLOSED",
+        "LOST"
+      ],
+      "enumColors": [
+        "gray",
+        "blue",
+        "yellow",
+        "green",
+        "red"
+      ],
+      "default": "TO_CONTACT"
+    },
+    "upfrontCash": {
+      "type": "number"
+    },
+    "monthlyRecurring": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "name",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}

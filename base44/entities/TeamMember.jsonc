@@ -1,0 +1,95 @@
+{
+  "name": "TeamMember",
+  "type": "object",
+  "properties": {
+    "client": {
+      "type": "string",
+      "description": "Client record id"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "CHANNEL_MANAGER",
+        "SHORT_FORM_EDITOR",
+        "LONG_FORM_EDITOR",
+        "THUMBNAIL_DESIGNER"
+      ],
+      "enumColors": [
+        "blue",
+        "purple",
+        "teal",
+        "pink"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "cost": {
+      "type": "number",
+      "description": "Monthly cost"
+    }
+  },
+  "required": [
+    "client",
+    "role",
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}

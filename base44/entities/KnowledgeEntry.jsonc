@@ -1,0 +1,100 @@
+{
+  "name": "KnowledgeEntry",
+  "type": "object",
+  "properties": {
+    "scope": {
+      "type": "string",
+      "enum": [
+        "THUMBNAIL_GLOBAL",
+        "VIDEO_GLOBAL",
+        "CLIENT_TITLES",
+        "CLIENT_IDEAS"
+      ],
+      "enumColors": [
+        "purple",
+        "blue",
+        "teal",
+        "pink"
+      ]
+    },
+    "client": {
+      "type": "string",
+      "description": "Optional client record id"
+    },
+    "userInput": {
+      "type": "string",
+      "maxLength": 10000
+    },
+    "learnedPrinciple": {
+      "type": "string",
+      "maxLength": 10000
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "scope",
+    "userInput",
+    "learnedPrinciple"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}

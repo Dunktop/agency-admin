@@ -1,0 +1,109 @@
+{
+  "name": "Payment",
+  "type": "object",
+  "properties": {
+    "client": {
+      "type": "string",
+      "description": "Client record id"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "SETUP",
+        "MONTHLY"
+      ],
+      "enumColors": [
+        "purple",
+        "blue"
+      ]
+    },
+    "dueDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "paidDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PAID",
+        "OVERDUE"
+      ],
+      "enumColors": [
+        "yellow",
+        "green",
+        "red"
+      ],
+      "default": "PENDING"
+    }
+  },
+  "required": [
+    "client",
+    "type",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}

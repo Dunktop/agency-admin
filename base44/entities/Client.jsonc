@@ -1,0 +1,143 @@
+{
+  "name": "Client",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Client / channel name"
+    },
+    "channelUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Link to the client channel"
+    },
+    "channelThumbnail": {
+      "type": "string",
+      "description": "Channel avatar image URL"
+    },
+    "channelSummary": {
+      "type": "string",
+      "maxLength": 5000
+    },
+    "offers": {
+      "type": "string",
+      "maxLength": 20000,
+      "description": "What the client sells"
+    },
+    "contentStrategy": {
+      "type": "string",
+      "maxLength": 20000
+    },
+    "planType": {
+      "type": "string",
+      "enum": [
+        "TEAM_ONLY",
+        "PERSONAL_INVOLVED",
+        "CUSTOM"
+      ],
+      "enumColors": [
+        "blue",
+        "purple",
+        "gray"
+      ],
+      "default": "TEAM_ONLY"
+    },
+    "customPlanLabel": {
+      "type": "string"
+    },
+    "setupFee": {
+      "type": "number",
+      "default": 30000
+    },
+    "monthlyFee": {
+      "type": "number"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "CHURNED"
+      ],
+      "enumColors": [
+        "green",
+        "gray"
+      ],
+      "default": "ACTIVE"
+    },
+    "discordServerId": {
+      "type": "string"
+    },
+    "googleAccountEmail": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 20000
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}
