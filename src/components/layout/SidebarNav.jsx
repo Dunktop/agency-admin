@@ -8,7 +8,7 @@ export default function SidebarNav({ collapsed = false, onNavigate }) {
   return (
     <nav className="flex flex-col gap-0.5">
       {NAV_ITEMS.map(({ to, label, icon: Icon }) => {
-        const active = pathname === to;
+        const active = to === "/" ? pathname === "/" : pathname === to || pathname.startsWith(`${to}/`);
         return (
           <Link
             key={to}

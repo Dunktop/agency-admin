@@ -30,11 +30,9 @@ export default function ClientsToolbar({ query, onQuery, plan, onPlan, editMode,
             className="h-full appearance-none bg-transparent pl-2 pr-7 text-[15px] outline-none"
             style={{ color: "inherit" }}
           >
-            <option value="ALL" style={{ background: "#1c1c1e" }}>
-              All plans
-            </option>
+            <option value="ALL">All plans</option>
             {PLAN_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value} style={{ background: "#1c1c1e" }}>
+              <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
