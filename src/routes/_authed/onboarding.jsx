@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageHeader from "@/components/layout/PageHeader";
-import ComingSoon from "@/components/layout/ComingSoon";
+import AgreementCard from "@/components/onboarding/AgreementCard";
+import OnboardingGuide from "@/components/onboarding/OnboardingGuide";
 
 export const Route = createFileRoute("/_authed/onboarding")({
   head: () => ({ meta: [{ title: "Onboarding · Agency Admin" }] }),
@@ -10,8 +11,9 @@ export const Route = createFileRoute("/_authed/onboarding")({
 function OnboardingPage() {
   return (
     <div className="space-y-5">
-      <PageHeader title="Onboarding" subtitle="New client setup" />
-      <ComingSoon description="A guided setup for each new client lands here next." />
+      <PageHeader title="Onboarding" subtitle="From signed agreement to first published video" />
+      <AgreementCard />
+      <OnboardingGuide />
     </div>
   );
 }

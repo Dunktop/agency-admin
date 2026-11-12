@@ -1,44 +1,48 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageHeader from "@/components/layout/PageHeader";
-import SpotlightPanel from "@/components/dashboard/SpotlightPanel";
-import ModuleCard from "@/components/dashboard/ModuleCard";
-import { BarsGlyph, LineGlyph } from "@/components/dashboard/PlaceholderGlyphs";
+import ClientStageCard from "@/components/dashboard/ClientStageCard";
+import DailyObjectives from "@/components/dashboard/DailyObjectives";
+import DashboardStats from "@/components/dashboard/DashboardStats";
+import { getDashboard } from "@/lib/dashboard-fns";
 
 export const Route = createFileRoute("/_authed/")({
+  ssr: false,
+  loader: () => getDashboard(),
   head: () => ({ meta: [{ title: "Dashboard · Agency Admin" }] }),
   component: DashboardPage,
 });
 
 function DashboardPage() {
+  const { totals, clients, objectives } = Route.useLoaderData();
+
   return (
-    <div className="space-y-4 md:space-y-5">
-      <PageHeader title="Dashboard" subtitle="Workspace overview" />
+    <div className="space-y-5">
+      <PageHeader title="Dashboard" subtitle="Where every account stands today" />
 
-      <SpotlightPanel />
+      <DashboardStats totals={totals} />
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <ModuleCard
-          title="Money"
-          subtitle="Retainers, setup fees & status"
-          glyph={<BarsGlyph />}
-          note="Nothing recorded yet"
-          delay={120}
-        />
-        <ModuleCard
-          title="Clients"
-          subtitle="Progress across accounts"
-          glyph={<LineGlyph />}
-          note="No clients added yet"
-          delay={160}
-        />
-      </div>
+      <section className="space-y-3">
+        <div className="flex items-baseline justify-between gap-2 px-1">
+          <h2 className="text-[17px] font-semibold tracking-[-0.01em]">Production stages</h2>
+          <span className="text-[12.5px] text-muted-foreground">
+            {clients.length} active {clients.length === 1 ? "client" : "clients"}
+          </span>
+        </div>
 
-      <section className="glass animate-rise rounded-2xl p-5" style={{ animationDelay: "220ms" }}>
-        <h3 className="text-[17px] font-semibold tracking-[-0.01em]">Recent activity</h3>
-        <p className="mt-1.5 text-[15px] text-muted-foreground">
-          Activity will appear here once your workspace has its first client.
-        </p>
+        {clients.length === 0 ? (
+          <p className="glass animate-rise rounded-2xl px-5 py-6 text-[14.5px] leading-relaxed text-muted-foreground">
+            Add your first client and their production stage shows up here.
+          </p>
+        ) : (
+          <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {clients.map((client, index) => (
+              <ClientStageCard key={client.id} client={client} delay={80 + index * 40} />
+            ))}
+          </ul>
+        )}
       </section>
+
+      <DailyObjectives objectives={objectives} clients={clients} />
     </div>
   );
 }
