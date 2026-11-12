@@ -10,6 +10,10 @@
       "type": "string",
       "description": "Link to the client channel"
     },
+    "channelId": {
+      "type": "string",
+      "description": "YouTube channel id used for analytics pulls"
+    },
     "channelThumbnail": {
       "type": "string",
       "description": "Channel avatar image URL"
