@@ -24,6 +24,10 @@
     "imageUrl": {
       "type": "string"
     },
+    "variantOf": {
+      "type": "string",
+      "description": "Parent ThumbnailMessage id when this message is one of a variation set"
+    },
     "rating": {
       "type": "number",
       "minimum": 1,
