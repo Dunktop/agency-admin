@@ -78,7 +78,7 @@ const sessionContext = (base44, session) =>
     loadMessages(base44, session.id),
     base44.entities.KnowledgeEntry.filter(
       { scope: "THUMBNAIL_GLOBAL" },
-      { sort: "-created_date", limit: 40 }
+      { sort: "created_date", limit: 500 }
     ),
     session.client
       ? base44.entities.Client.get(session.client).catch(() => null)

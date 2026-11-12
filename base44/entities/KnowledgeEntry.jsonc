@@ -23,11 +23,13 @@
     },
     "userInput": {
       "type": "string",
-      "maxLength": 10000
+      "maxLength": 400000,
+      "description": "The training material pasted by the art director, stored in full"
     },
     "learnedPrinciple": {
       "type": "string",
-      "maxLength": 10000
+      "maxLength": 30000,
+      "description": "The AI's confirmation plus the durable rules extracted from that material"
     },
     "timestamp": {
       "type": "string",

@@ -104,17 +104,22 @@ export const sendIdeationMessage = createServerFn({ method: "POST" })
     // Full history, reloaded after saving: every reply is grounded in the whole thread.
     const history = await loadMessages(base44, thread.id);
 
-    const [clientsPage, taggedClient] = await Promise.all([
+    const [clientsPage, taggedClient, knowledgePage] = await Promise.all([
       base44.entities.Client.list({ sort: "name", limit: 200 }),
       thread.client
         ? base44.entities.Client.get(thread.client).catch(() => null)
         : Promise.resolve(null),
+      base44.entities.KnowledgeEntry.filter(
+        { scope: "VIDEO_GLOBAL" },
+        { sort: "created_date", limit: 500 }
+      ),
     ]);
 
     const prompt = buildIdeationPrompt({
       clients: clientsPage.items,
       taggedClient,
       messages: history,
+      knowledge: knowledgePage.items,
     });
 
     let reply = "";

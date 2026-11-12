@@ -1,4 +1,5 @@
 import { parseJsonList } from "@/lib/clients";
+import { knowledgeBlock } from "@/lib/knowledge.server";
 
 const MAX_HISTORY = 40;
 
@@ -71,9 +72,13 @@ function formatHistory(messages) {
     .join("\n\n");
 }
 
-export function buildIdeationPrompt({ clients = [], taggedClient = null, messages = [] }) {
+export function buildIdeationPrompt({ clients = [], taggedClient = null, messages = [], knowledge = [] }) {
   return [
     IDEATION_SYSTEM_PROMPT,
+    "",
+    knowledgeBlock(knowledge, "VIDEO_GLOBAL", {
+      emptyHint: "None saved yet. Work from the principles above until the art director trains you.",
+    }),
     "",
     "CLIENT DATABASE (this agency's real clients)",
     formatClientDirectory(clients),
