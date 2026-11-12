@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
 
-export default function AiUnavailable() {
+export default function AiUnavailable({ instructions }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -21,8 +21,8 @@ export default function AiUnavailable() {
           </button>
           {open && (
             <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              Open Settings, go to Integrations &amp; API keys, and paste your key. Save it and this tool starts working
-              automatically — no redeploy needed.
+              {instructions ||
+                "Open Settings, go to Integrations & API keys, and paste your key. Save it and this tool starts working automatically — no redeploy needed."}
             </p>
           )}
         </div>
