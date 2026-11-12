@@ -3,6 +3,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import ClientStageCard from "@/components/dashboard/ClientStageCard";
 import DailyObjectives from "@/components/dashboard/DailyObjectives";
 import DashboardStats from "@/components/dashboard/DashboardStats";
+import DiscordSyncNote from "@/components/dashboard/DiscordSyncNote";
 import { getDashboard } from "@/lib/dashboard-fns";
 
 export const Route = createFileRoute("/_authed/")({
@@ -28,6 +29,8 @@ function DashboardPage() {
             {clients.length} active {clients.length === 1 ? "client" : "clients"}
           </span>
         </div>
+
+        <DiscordSyncNote />
 
         {clients.length === 0 ? (
           <p className="glass animate-rise rounded-2xl px-5 py-6 text-[14.5px] leading-relaxed text-muted-foreground">

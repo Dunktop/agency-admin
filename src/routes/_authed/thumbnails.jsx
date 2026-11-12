@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import IntegrationBanner from "@/components/integrations/IntegrationBanner";
 import ThumbnailWorkspace from "@/components/thumbnails/ThumbnailWorkspace";
 
 export const Route = createFileRoute("/_authed/thumbnails")({
@@ -8,5 +9,10 @@ export const Route = createFileRoute("/_authed/thumbnails")({
 });
 
 function ThumbnailsPage() {
-  return <ThumbnailWorkspace />;
+  return (
+    <div className="space-y-3">
+      <IntegrationBanner integration="higgsfield" />
+      <ThumbnailWorkspace />
+    </div>
+  );
 }

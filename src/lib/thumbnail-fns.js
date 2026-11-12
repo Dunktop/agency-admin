@@ -63,10 +63,10 @@ const titleFrom = (text) => {
   return firstLine.length > 66 ? `${firstLine.slice(0, 66).trimEnd()}…` : firstLine;
 };
 
-const submitSafely = async (prompt) => {
-  if (!higgsfieldConfigured()) return { requestId: "", error: "" };
+const submitSafely = async (prompt, base44) => {
+  if (!(await higgsfieldConfigured(base44))) return { requestId: "", error: "" };
   try {
-    const { requestId } = await submitThumbnailGeneration({ prompt });
+    const { requestId } = await submitThumbnailGeneration({ prompt, base44 });
     return { requestId, error: "" };
   } catch (error) {
     return { requestId: "", error: String(error?.message || "Higgsfield rejected the request").slice(0, 280) };
@@ -105,7 +105,7 @@ const createImageReply = async (base44, { session, instruction, variantOf = "" }
     direction = "";
   }
 
-  const { requestId, error } = await submitSafely(imagePrompt || instruction);
+  const { requestId, error } = await submitSafely(imagePrompt || instruction, base44);
 
   const message = await base44.entities.ThumbnailMessage.create({
     session: session.id,
@@ -150,7 +150,7 @@ export const listThumbnailSessions = createServerFn({ method: "GET" })
         sessionSummary(session, session.client ? names.get(session.client) || "" : "")
       ),
       clients: clientsPage.items.map((client) => ({ id: client.id, name: client.name })),
-      configured: higgsfieldConfigured(),
+      configured: await higgsfieldConfigured(base44),
     };
   });
 
@@ -245,7 +245,7 @@ export const sendThumbnailMessage = createServerFn({ method: "POST" })
       assistantMessage: message,
       requestId,
       error,
-      configured: higgsfieldConfigured(),
+      configured: await higgsfieldConfigured(base44),
     };
   });
 
@@ -295,7 +295,7 @@ export const createThumbnailVariations = createServerFn({ method: "POST" })
 
     const groupId = source.variantOf || source.id;
 
-    const submissions = await Promise.all(clean.map((variant) => submitSafely(variant.imagePrompt)));
+    const submissions = await Promise.all(clean.map((variant) => submitSafely(variant.imagePrompt, base44)));
     const created = await Promise.all(
       clean.map((variant, index) =>
         base44.entities.ThumbnailMessage.create({
@@ -332,7 +332,10 @@ export const pollThumbnailGeneration = createServerFn({ method: "POST" })
   .middleware([requireUser])
   .validator(z.object({ messageId: z.string(), requestId: z.string().max(120) }))
   .handler(async ({ data, context }) => {
-    const result = await fetchGenerationStatus({ requestId: data.requestId });
+    const result = await fetchGenerationStatus({
+      requestId: data.requestId,
+      base44: context.getBase44(),
+    });
 
     if (result.status === "completed" && result.imageUrl) {
       await context

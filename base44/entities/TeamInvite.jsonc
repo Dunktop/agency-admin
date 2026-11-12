@@ -1,0 +1,55 @@
+{
+  "name": "TeamInvite",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Address the invite was sent to"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "enumColors": [
+        "blue",
+        "gray"
+      ],
+      "default": "user"
+    },
+    "invitedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "invitedBy": {
+      "type": "string",
+      "description": "Admin email that sent the invite"
+    }
+  },
+  "required": [
+    "email"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

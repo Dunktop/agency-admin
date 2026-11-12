@@ -1,0 +1,45 @@
+{
+  "name": "Discord status sync",
+  "description": "Every 30 minutes, read the recent team messages in each connected Discord server and move the matching client to the production stage they describe. Read-only: the bot never posts.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "discord_status_sync",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "sync_discord_status": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/discord-status",
+            "method": "POST"
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Read Discord and update production stages",
+            "description": "Read-only scan of each client server"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "interval",
+      "cron_expression": null,
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": 30,
+      "interval_unit": "minutes",
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

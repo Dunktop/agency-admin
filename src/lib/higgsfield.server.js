@@ -1,4 +1,5 @@
 import { secrets } from "base44:runtime";
+import { readIntegrationFields } from "@/lib/integration-store.server";
 
 const API_BASE = "https://api.higgsfield.ai";
 
@@ -13,19 +14,33 @@ const MODEL_ENDPOINTS = [
   "nano-banana-pro",
 ];
 
-const credentials = () => {
-  const keyId = secrets.get("HIGGSFIELD_API_KEY");
-  const secret = secrets.get("HIGGSFIELD_API_SECRET");
+// Keys saved in Settings → Integrations win; the platform secrets stay as a fallback.
+export async function higgsfieldCredentials(base44) {
+  const fields = base44 ? await readIntegrationFields(base44, "higgsfield") : {};
+  const keyId = fields.apiKey || secrets.get("HIGGSFIELD_API_KEY") || "";
+  const secret = fields.apiSecret || secrets.get("HIGGSFIELD_API_SECRET") || "";
   if (!keyId || !secret) return null;
   return { keyId, secret };
-};
+}
 
-export const higgsfieldConfigured = () => Boolean(credentials());
+export async function higgsfieldConfigured(base44) {
+  return Boolean(await higgsfieldCredentials(base44));
+}
 
 const authorization = ({ keyId, secret }) => `Key ${keyId}:${secret}`;
 
-export async function submitThumbnailGeneration({ prompt }) {
-  const creds = credentials();
+export async function verifyHiggsfieldCredentials({ apiKey, apiSecret }) {
+  const response = await fetch(`${API_BASE}/requests/00000000/status`, {
+    headers: { Authorization: authorization({ keyId: apiKey, secret: apiSecret }) },
+  });
+  if (response.status === 401 || response.status === 403) {
+    throw new Error("Higgsfield rejected that key and secret.");
+  }
+  return true;
+}
+
+export async function submitThumbnailGeneration({ prompt, base44 }) {
+  const creds = await higgsfieldCredentials(base44);
   if (!creds) throw new Error("Higgsfield is not connected yet.");
 
   const body = JSON.stringify({ prompt, aspect_ratio: "16:9", resolution: "4K" });
@@ -54,8 +69,8 @@ export async function submitThumbnailGeneration({ prompt }) {
   throw new Error(`Higgsfield image endpoint not found (${lastStatus}).`);
 }
 
-export async function fetchGenerationStatus({ requestId }) {
-  const creds = credentials();
+export async function fetchGenerationStatus({ requestId, base44 }) {
+  const creds = await higgsfieldCredentials(base44);
   if (!creds) throw new Error("Higgsfield is not connected yet.");
 
   const response = await fetch(`${API_BASE}/requests/${encodeURIComponent(requestId)}/status`, {

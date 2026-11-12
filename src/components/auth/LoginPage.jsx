@@ -5,6 +5,7 @@ import { AuthError, AuthLink, GoogleButton, OrDivider, SubmitButton } from "@/co
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MfaFlow } from "@/components/auth/MfaFlow";
+import SuperAdminAccessDialog from "@/components/auth/SuperAdminAccessDialog";
 import { MfaScreen } from "@/components/auth/MfaParts";
 import { loginWithMfa } from "@/lib/authMfa";
 import { safeReturnTo } from "@/lib/authReturnTo";
@@ -75,6 +76,9 @@ export function LoginPage() {
           Create one
         </AuthLink>
       </p>
+      <div className="text-center">
+        <SuperAdminAccessDialog />
+      </div>
     </AuthLayout>
   );
 }
