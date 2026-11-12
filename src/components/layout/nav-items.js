@@ -10,6 +10,7 @@ import {
   UserRound,
   Rocket,
   Settings,
+  Sparkles,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/team", label: "Team", icon: UserRound },
   { to: "/onboarding", label: "Onboarding", icon: Rocket },
+  { to: "/brand", label: "Brand", icon: Sparkles },
   { to: "/settings", label: "Settings", icon: Settings },
 ];
 
