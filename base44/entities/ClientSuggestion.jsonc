@@ -1,0 +1,93 @@
+{
+  "name": "ClientSuggestion",
+  "type": "object",
+  "properties": {
+    "client": {
+      "type": "string",
+      "description": "Client record id"
+    },
+    "tool": {
+      "type": "string",
+      "enum": [
+        "TITLES",
+        "IDEAS"
+      ],
+      "enumColors": [
+        "blue",
+        "purple"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "maxLength": 60000,
+      "description": "JSON payload of the last generated result"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "client",
+    "tool",
+    "content"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    }
+  }
+}

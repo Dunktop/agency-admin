@@ -12,6 +12,7 @@ import TeamCard from "@/components/clients/detail/TeamCard";
 import PaymentsCard from "@/components/clients/detail/PaymentsCard";
 import AnalyticsCard from "@/components/clients/detail/AnalyticsCard";
 import NotesCard from "@/components/clients/detail/NotesCard";
+import ClientAITools from "@/components/clients/detail/ClientAITools";
 import { ArrowLeft, Loader2, RefreshCw } from "lucide-react";
 
 export const Route = createFileRoute("/_authed/clients/$clientId")({
@@ -124,6 +125,8 @@ function ClientDetailPage() {
       <OverviewCard client={client} uploads={uploads} aiUnavailable={aiUnavailable} />
 
       <StrategyCard client={client} aiUnavailable={aiUnavailable} />
+
+      <ClientAITools clientId={client.id} />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <PipelineCard stage={stage} updatedAt={progress[0]?.updatedAt} />
