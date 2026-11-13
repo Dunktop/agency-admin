@@ -129,7 +129,7 @@ function ClientDetailPage() {
       <ClientAITools clientId={client.id} />
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <PipelineCard stage={stage} updatedAt={progress[0]?.updatedAt} />
+        <PipelineCard clientId={client.id} stage={stage} updatedAt={progress[0]?.updatedAt} />
         <TeamCard team={team} />
         <PaymentsCard payments={payments} />
         <AnalyticsCard snapshots={analytics} />

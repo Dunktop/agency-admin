@@ -1,14 +1,20 @@
 import { STAGES, formatDate } from "@/lib/clients";
 import SectionCard from "./SectionCard";
+import StageSelect from "./StageSelect";
 
-export default function PipelineCard({ stage, updatedAt }) {
+export default function PipelineCard({ clientId, stage, updatedAt }) {
   const currentIndex = STAGES.findIndex((item) => item.key === stage);
 
   return (
     <SectionCard
       title="Production pipeline"
       delay={140}
-      action={updatedAt ? <span className="text-[13px] text-muted-foreground">{formatDate(updatedAt)}</span> : null}
+      action={
+        <div className="flex items-center gap-2">
+          {updatedAt && <span className="text-[13px] text-muted-foreground">{formatDate(updatedAt)}</span>}
+          <StageSelect clientId={clientId} stage={stage} />
+        </div>
+      }
     >
       {currentIndex === -1 && (
         <p className="mb-3 text-[13px] text-muted-foreground">No production update recorded yet.</p>

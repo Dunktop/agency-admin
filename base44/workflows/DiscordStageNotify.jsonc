@@ -1,0 +1,41 @@
+{
+  "name": "Discord stage notifications",
+  "description": "Whenever a client's production stage changes to In review or Published, post the update to the team Discord channel.",
+  "trigger": {
+    "condition": "${ (.trigger.data.stage == \"IN_REVIEW\" or .trigger.data.stage == \"PUBLISHED\") and .trigger.old_data.stage != .trigger.data.stage }",
+    "config": {
+      "trigger_type": "entity",
+      "entity_name": "ClientProgress",
+      "events": [
+        "update"
+      ]
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "discord_stage_notify",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "post_stage_update": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/discord-stage-notify",
+            "method": "POST",
+            "body": {
+              "progress_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Post the update to Discord",
+            "description": "Announce the new stage in the team channel"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -53,8 +53,17 @@ export const fetchBotGuilds = async (token) => {
   }));
 };
 
-// Bot permissions used by the guide: View Channel (1024) + Read Message History (65536).
-export const READ_ONLY_PERMISSIONS = "66560";
+// Bot permissions: View Channel (1024) + Send Messages (2048) + Read Message History (65536).
+export const BOT_PERMISSIONS = "68608";
+
+export const sendChannelMessage = async (token, channelId, content) => {
+  if (!channelId) fail("Add the team channel ID first.");
+  const message = await discordRequest(`/channels/${channelId}/messages`, token, {
+    method: "POST",
+    body: JSON.stringify({ content }),
+  });
+  return { id: String(message?.id || "") };
+};
 
 export const normalizeName = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 

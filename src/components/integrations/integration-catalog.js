@@ -92,7 +92,7 @@ export const INTEGRATION_CATALOG = [
     blurb: "Keeps every client's production stage current from the team's Discord servers.",
     minutes: "~5 min",
     intro:
-      "A read-only bot reads recent messages in each client's server so the status agent can work out which production stage that client is at. The bot never sends messages.",
+      "A bot reads recent messages in each client's server so the status agent can work out which production stage that client is at, and posts a message to your team channel whenever a client reaches In review or Published. Sending messages is the only thing it can do there.",
     steps: [
       {
         title: "Create the application",
@@ -105,21 +105,29 @@ export const INTEGRATION_CATALOG = [
         code: "Bot  →  Privileged Gateway Intents  →  MESSAGE CONTENT INTENT  ✅",
       },
       {
-        title: "Use read-only permissions only",
-        body: "Invite the bot with just View Channels and Read Message History. That is the permission integer below — no send, manage or admin permissions.",
-        code: "permissions=66560",
+        title: "Give it the permissions it needs",
+        body: "Invite the bot with View Channels, Read Message History and Send Messages — enough to read the client servers and post in your team channel, and nothing more.",
+        code: "permissions=68608",
       },
       {
         title: "Invite it into each client server",
         body: "Name each Discord server after its client in this app (for example “Peak Form Fitness”). Servers are matched to clients by name, so there are no server IDs to paste.",
       },
       {
+        title: "Add your team channel ID",
+        body: "In Discord open Settings → Advanced → Developer Mode, right-click the channel that should receive the updates and choose Copy Channel ID. Paste it in the second field.",
+        code: "Channel  →  right-click  →  Copy Channel ID",
+      },
+      {
         title: "Paste the bot token and test",
         body: "Bot → Reset Token → Copy, then paste it below. The test reports the bot name and how many servers it can see.",
       },
     ],
-    note: "Read-only, and automatic: the status agent runs every ~30 minutes, reads recent messages, and writes each matched client's stage with source AI_DISCORD.",
-    fields: [{ key: "botToken", label: "Bot token", placeholder: "MTIz…" }],
+    note: "The status agent runs every ~30 minutes and writes each matched client's stage. Whenever a stage becomes In review or Published, a notification is posted to your team channel.",
+    fields: [
+      { key: "botToken", label: "Bot token", placeholder: "MTIz…" },
+      { key: "teamChannelId", label: "Team channel ID", placeholder: "1234567890123456789" },
+    ],
   },
   {
     id: "notion",

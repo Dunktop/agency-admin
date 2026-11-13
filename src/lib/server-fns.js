@@ -256,3 +256,33 @@ export const markPaymentPaid = createServerFn({ method: "POST" })
     const paidDate = new Date().toISOString().slice(0, 10);
     return context.getBase44().entities.Payment.update(data.id, { status: "PAID", paidDate });
   });
+
+export const setClientStage = createServerFn({ method: "POST" })
+  .middleware([requireUser])
+  .validator(
+    z.object({
+      clientId: z.string(),
+      stage: z.enum([
+        "WAITING_FOR_FOOTAGE",
+        "FILMING",
+        "EDITING_SHORT_FORM",
+        "EDITING_LONG_FORM",
+        "DESIGNING_THUMBNAIL",
+        "IN_REVIEW",
+        "UPLOADING",
+        "PUBLISHED",
+      ]),
+    })
+  )
+  .handler(async ({ data, context }) => {
+    const base44 = context.getBase44();
+    const page = await base44.entities.ClientProgress.filter(
+      { client: data.clientId },
+      { sort: "-updated_date", limit: 1 }
+    );
+    const record = (Array.isArray(page) ? page : page.items || [])[0];
+    const patch = { stage: data.stage, source: "MANUAL", updatedAt: new Date().toISOString() };
+
+    if (record) return base44.entities.ClientProgress.update(record.id, patch);
+    return base44.entities.ClientProgress.create({ client: data.clientId, ...patch });
+  });
